@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"math/rand"
@@ -55,7 +56,12 @@ func generateKeyspace(opt *options) []byte {
 	return shuffleString(keyspaceJoined)
 }
 
-func newRandomString(opt *options) []string {
+func newRandomString(opt *options) ([]string, error) {
+
+	if !opt.uppercase && !opt.lowercase && !opt.digits && !opt.symbols {
+		return nil, errors.New("You must specify atleast of one: uppercase, lowercase, digits or symbols.")
+	}
+
 	keyspace := generateKeyspace(opt)
 	var passwords []string
 	var password []byte
@@ -66,28 +72,65 @@ func newRandomString(opt *options) []string {
 
 	passwords = append(passwords, string(password))
 
-	return passwords
+	return passwords, nil
 }
 
 func main() {
 
 	var length = flag.Int("l", 16, "length of string")
-	var passwordType = flag.String("t", "string", "type of password to generate")
+	var count = flag.Int("c", 1, "number of passwords")
+	var customOptions = flag.String("o", "ulds", "custom options (u, l, d, s, p, x")
+	var passwordType = flag.String("t", "string", "type of password")
 	flag.Parse()
 
 	defaultOptions := &options{
-		uppercase: true,
-		lowercase: true,
-		digits:    true,
-		symbols:   true,
+		uppercase: false,
+		lowercase: false,
+		digits:    false,
+		symbols:   false,
 		length:    *length,
-		count:     1,
+		count:     *count,
+	}
+
+	if *customOptions == "" {
+		fmt.Fprintln(os.Stderr, "ERR: No options specified.")
+		os.Exit(1)
+	}
+
+	if strings.Contains(*customOptions, "u") {
+		defaultOptions.uppercase = true
+	}
+
+	if strings.Contains(*customOptions, "l") {
+		defaultOptions.lowercase = true
+	}
+
+	if strings.Contains(*customOptions, "d") {
+		defaultOptions.digits = true
+	}
+
+	if strings.Contains(*customOptions, "s") {
+		defaultOptions.symbols = true
+	}
+
+	if strings.Contains(*customOptions, "p") {
+		defaultOptions.prefix = true
+	}
+
+	if strings.Contains(*customOptions, "x") {
+		defaultOptions.suffix = true
 	}
 
 	if *passwordType == "string" {
-		fmt.Println(newRandomString(defaultOptions)[0])
+		password, err := newRandomString(defaultOptions)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+
+		fmt.Println(password[0])
 	} else {
-		fmt.Fprintf(os.Stderr, "Unsupported password type '%s'\n", *passwordType)
+		fmt.Fprintf(os.Stderr, "ERR: Unsupported password type '%s'\n", *passwordType)
 		os.Exit(1)
 	}
 }
