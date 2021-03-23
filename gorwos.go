@@ -21,15 +21,16 @@ type options struct {
 	count     int
 }
 
-func main() {
+var (
+	length        = flag.Int("l", 16, "length of string")
+	count         = flag.Int("c", 1, "number of passwords")
+	customOptions = flag.String("o", "ulds", "custom options (u, l, d, s, p, x")
+)
 
-	var length = flag.Int("l", 16, "length of string")
-	var count = flag.Int("c", 1, "number of passwords")
-	var customOptions = flag.String("o", "ulds", "custom options (u, l, d, s, p, x")
+func main() {
 	flag.Parse()
 
-	err := run(*count, *length, *customOptions)
-	if err != nil {
+	if err := run(*count, *length, *customOptions); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
