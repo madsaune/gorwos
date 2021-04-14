@@ -4,6 +4,12 @@ gorwos is a commandline tool to generate random words or strings.
 
 **ATTENTION**: Functionallity may change at anytime.
 
+## Installation
+
+```bash
+go get github.com/madsaune/gorwos
+```
+
 ## Usage
 
 ```plaintext
