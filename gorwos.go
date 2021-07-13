@@ -1,3 +1,5 @@
+// Generate random strings with options
+
 package main
 
 import (
@@ -42,8 +44,10 @@ func run(count, length int, customOptions string) error {
 		lowercase: false,
 		digits:    false,
 		symbols:   false,
-		count:     count,
+		prefix:    false,
+		suffix:    false,
 		length:    length,
+		count:     count,
 	}
 
 	if customOptions == "" {
