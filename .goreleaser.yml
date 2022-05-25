@@ -17,6 +17,8 @@ builds:
     ldflags:
       - -s
       - -w
+      - -X github.com/madsaune/gorwos/pkg/version.Version={{.Version}}
+      - -X github.com/madsaune/gorwos/pkg/version.BuildDate={{.Date}}
     main: ./cmd
 archives:
   -
