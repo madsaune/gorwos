@@ -10,7 +10,7 @@ type Info struct {
 	BuildDate string
 }
 
-// Version of afctl
+// Version of gorwos
 var Version = "dev"
 
 // BuildDate of the release
@@ -33,5 +33,5 @@ func AsJSON() string {
 
 func String() string {
 	v := GetVersionInfo()
-	return fmt.Sprintf("afctl version %s (%s)\n", v.Version, v.BuildDate)
+	return fmt.Sprintf("gorwos version %s (%s)\n", v.Version, v.BuildDate)
 }
