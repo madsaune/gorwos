@@ -7,16 +7,23 @@ import (
 	"strings"
 
 	"github.com/madsaune/gorwos/pkg/gorwos"
+	"github.com/madsaune/gorwos/pkg/version"
 )
 
 var (
 	length        = flag.Int("l", 16, "length of string")
 	count         = flag.Int("c", 1, "number of passwords")
 	customOptions = flag.String("o", "ulds", "custom options (u, l, d, s, p, x")
+	showVersion   = flag.Bool("v", false, "show version")
 )
 
 func main() {
 	flag.Parse()
+
+	if *showVersion {
+		fmt.Println(version.String())
+		return
+	}
 
 	opts := optionsFromArgs(*count, *length, *customOptions)
 
