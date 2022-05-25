@@ -111,9 +111,8 @@ func generateKeyspace(opt *Options) []byte {
 }
 
 func newRandomString(opt *Options) ([]string, error) {
-
 	if !opt.Uppercase && !opt.Lowercase && !opt.Digits && !opt.Symbols {
-		return nil, errors.New("ERR: You must specify atleast of one: uppercase, lowercase, digits or symbols.")
+		return nil, errors.New("err: You must specify atleast of one: uppercase, lowercase, digits or symbols")
 	}
 
 	keyspace := generateKeyspace(opt)
